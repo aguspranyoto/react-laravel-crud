@@ -24,8 +24,7 @@ function UserForm() {
                 .get(`/users/${id}`)
                 .then(({ data }) => {
                     setIsLoading(false);
-
-                    setUsers(data.data);
+                    setUsers(data);
                 })
                 .catch(() => {
                     setIsLoading(false);
