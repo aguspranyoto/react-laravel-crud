@@ -81,6 +81,9 @@ input:focus {
 .btn-add {
     background-color: #00a762;
 }
+.btn-edit {
+    background-color: #5b08a7;
+}
 .btn-delete {
     background-color: #b72424;
 }

@@ -15,7 +15,6 @@ function Users() {
     }, [page]);
 
     const getUsers = () => {
-        console.log(page);
         setIsLoading(true);
         axiosClient
             .get(`/users?page=${page}`)
@@ -23,7 +22,6 @@ function Users() {
                 setIsLoading(false);
                 setUsers(data.data);
                 setLinks(data.meta.links);
-                console.log(data.meta);
             })
             .catch(() => {
                 setIsLoading(false);
@@ -57,7 +55,7 @@ function Users() {
                 </Link>
             </div>
             <div className="card animated fadeInDown">
-                <table>
+                <table className="">
                     <thead>
                         <tr>
                             <th>Id</th>
@@ -74,13 +72,12 @@ function Users() {
                                     className="text-center"
                                     style={{ padding: "40px 40px" }}
                                     colSpan={5}
-                                    rowSpan={8}
                                 >
                                     Loading...
                                 </th>
                             </tr>
                         </tbody>
-                    ) : (
+                    ) : users.length ? (
                         <tbody>
                             {users.map((u) => (
                                 <tr key={u.id}>
@@ -107,6 +104,18 @@ function Users() {
                                     </td>
                                 </tr>
                             ))}
+                        </tbody>
+                    ) : (
+                        <tbody>
+                            <tr>
+                                <th
+                                    className="text-center"
+                                    style={{ padding: "40px 40px" }}
+                                    colSpan={5}
+                                >
+                                    No data
+                                </th>
+                            </tr>
                         </tbody>
                     )}
                 </table>

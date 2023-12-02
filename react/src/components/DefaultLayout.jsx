@@ -36,10 +36,14 @@ function DefaultLayout() {
                     <div className="notification">{notification}</div>
                 )}
                 <header>
-                    <div>Header</div>
-                    <div>
+                    <div>React Laravel PostgreSQL CRUD</div>
+                    <div className="flex items-center gap-4">
                         {user.name}
-                        <a href="#" onClick={onLogout} className="btn-logout">
+                        <a
+                            href="#"
+                            onClick={onLogout}
+                            className="hover:underline"
+                        >
                             Logout
                         </a>
                     </div>
