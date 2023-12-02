@@ -7,21 +7,21 @@ function Users() {
     const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const { setNotification } = UseStateContext();
+    const [links, setLinks] = useState(null);
+    const [page, setPage] = useState(1);
 
     useEffect(() => {
         getUsers();
-    }, []);
+    }, [page]);
 
     const getUsers = () => {
         setIsLoading(true);
         axiosClient
-            .get("/users")
+            .get(`/users?page=${page}`)
             .then(({ data }) => {
                 setIsLoading(false);
-
                 setUsers(data.data);
                 setLinks(data.meta.links);
-                console.log(data.meta);
             })
             .catch(() => {
                 setIsLoading(false);
@@ -119,6 +119,96 @@ function Users() {
                         </tbody>
                     )}
                 </table>
+                <div className="w-full">
+                    <nav className="flex justify-center pt-5">
+                        <ul className="inline-flex -space-x-px text-sm">
+                            {links &&
+                                links.map((item) =>
+                                    item.url == null ? (
+                                        <li key={item.label}>
+                                            <a className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">
+                                                {item.label
+                                                    .replace("&laquo;", "")
+                                                    .replace("&raquo;", "")}
+                                            </a>
+                                        </li>
+                                    ) : (
+                                        <li key={item.label}>
+                                            <a
+                                                onClick={() => {
+                                                    item.label ==
+                                                    "&laquo; Previous"
+                                                        ? setPage(page - 1)
+                                                        : item.label ==
+                                                          "Next &raquo;"
+                                                        ? setPage(page + 1)
+                                                        : setPage(
+                                                              Number(item.label)
+                                                          );
+                                                }}
+                                                className={
+                                                    Number(item.label) == page
+                                                        ? `cursor-pointer flex items-center justify-center px-3 h-8 leading-tight text-white bg-[#5b08a7] border border-gray-300 hover:bg-gray-100 hover:text-gray-700`
+                                                        : `cursor-pointer flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700`
+                                                }
+                                            >
+                                                {item.label
+                                                    .replace("&laquo;", "")
+                                                    .replace("&raquo;", "")}
+                                            </a>
+                                        </li>
+                                    )
+                                )}
+                            {/* <li>
+                                <a
+                                    href="#"
+                                    className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 "
+                                >
+                                    Previous
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href="#"
+                                    className="flex items-center justify-center px-3 h-8 leading-tight text-white bg-[#5b08a7] border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
+                                >
+                                    1
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href="#"
+                                    className="flex items-center justify-center px-3 h-8 leading-tight text--gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
+                                >
+                                    2
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href="#"
+                                    className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 "
+                                >
+                                    ...
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href="#"
+                                    className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 "
+                                >
+                                    Next
+                                </a>
+                            </li> */}
+                        </ul>
+                    </nav>
+
+                    {/* {links &&
+                        links.map((item) => (
+                            <div key={item.label} className="flex ">
+                                <div className="text-xs">{item.url}</div>
+                            </div>
+                        ))} */}
+                </div>
             </div>
         </div>
     );

@@ -15,6 +15,7 @@ function UserForm() {
         password: "",
         password_confirmation: "",
     });
+
     const { setNotification } = UseStateContext();
 
     if (id) {
@@ -24,7 +25,7 @@ function UserForm() {
                 .get(`/users/${id}`)
                 .then(({ data }) => {
                     setIsLoading(false);
-                    setUsers(data);
+                    setUsers(data.data);
                 })
                 .catch(() => {
                     setIsLoading(false);
